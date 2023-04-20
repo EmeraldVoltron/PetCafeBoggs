@@ -20,10 +20,13 @@ package Driver;
 * my program.         
 ***************************************************************/
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import helperFiles.AdopterHelper;
 import helperFiles.AnimalsHelper;
+import classes.Pets;
+import classes.Adopters;
 
 /**
  * @author abbyb
@@ -31,20 +34,23 @@ import helperFiles.AnimalsHelper;
  */
 public class DriverClass {
 	
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		AdopterHelper adHelp = new AdopterHelper();
-			
-		printMenu();
+		ArrayList<Pets> pets = new ArrayList<Pets>();
+		ArrayList<Adopters> adopters = new ArrayList<Adopters>();
+		
+		printMenu(pets, adopters);
 
 		System.out.println("Goodbye!");
 	}
 
-	
-	public static void printMenu() {
+	//Main menu
+	public static void printMenu(ArrayList<Pets> p, ArrayList<Adopters> a) {
+		ArrayList<Pets> pets = p;
+		ArrayList<Adopters> adopters = a;
+		
 		System.out.println("Welcome to the pet cafe!");
 		System.out.println("------------------------");
 		System.out.println("Enter a Letter to choose from: ");
@@ -55,6 +61,7 @@ public class DriverClass {
 		Scanner in = new Scanner(System.in);
 		
 		try {
+			//check to see if the input is right, if not ask again
 			String choice = in.next();
 			while(choice.equalsIgnoreCase("a") == false &&
 					choice.equalsIgnoreCase("b") == false &&
@@ -62,11 +69,11 @@ public class DriverClass {
 				System.out.println("Invalid option please try again.");
 				choice = in.next();
 			}
-			
+			//go to corresponding menus
 			if(choice.equalsIgnoreCase("a")) {
-				printAnimalMenu();
+				printAnimalMenu(pets, adopters);
 			} else if(choice.equalsIgnoreCase("b")) {
-				printAdopterMenu();
+				printAdopterMenu(pets, adopters);
 			} 
 		} catch (Exception e) {
 			
@@ -75,7 +82,8 @@ public class DriverClass {
 		in.close();
 	}
 	
-	public static void printAnimalMenu(){
+	//animal menu (option a)
+	public static void printAnimalMenu(ArrayList<Pets> pets, ArrayList<Adopters> a){
 		AnimalsHelper anHelp = new AnimalsHelper();
 		
 		Scanner in = new Scanner(System.in);
@@ -89,6 +97,7 @@ public class DriverClass {
 		System.out.println("R. return to main menu");
 		
 		String choice = in.next();
+		
 		while(choice.equalsIgnoreCase("a") == false &&
 				choice.equalsIgnoreCase("b") == false &&
 				choice.equalsIgnoreCase("c") == false &&
@@ -98,22 +107,23 @@ public class DriverClass {
 		}
 		
 		if(choice.equalsIgnoreCase("r")) {
-			printMenu();
+			printMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("a")){
-			anHelp.viewAnimals();
+			anHelp.viewAnimals(pets);
+			printAnimalMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("b")) {
-			anHelp.addAnimals();
+			pets = anHelp.addAnimals(pets);
+			printAnimalMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("c")) {
-			System.out.println("What animal would you like to delete?");
-			System.out.println("Enter the animal's ID number from list.");
-			int animalNumber = in.nextInt();
-			
+			pets = anHelp.deleteAnimals(pets);
+			printAnimalMenu(pets, a);
 		}
 		
 		in.close();
 	}
 	
-	public static void printAdopterMenu() {
+	//adopter menu option B
+	public static void printAdopterMenu(ArrayList<Pets> p, ArrayList<Adopters> adopters) {
 		AdopterHelper adHelp = new AdopterHelper();
 		
 		Scanner in = new Scanner(System.in);
@@ -136,12 +146,13 @@ public class DriverClass {
 		}
 		
 		if(choice.equalsIgnoreCase("r")) {
-			printMenu();
+			printMenu(p, adopters);
 		} else if(choice.equalsIgnoreCase("a")){
-			adHelp.viewAdopters();
+			//adopters = adHelp.viewAdopters(adopters);
 		} else if(choice.equalsIgnoreCase("b")) {
-			adHelp.addAdopters();
+			//adopters = adHelp.addAdopters(adopters);
 		} else if(choice.equalsIgnoreCase("c")) {
+			//adopters = adHelp.deleteAdopters(adopters);
 			System.out.println("What adopter would you like to delete?");
 			System.out.println("Enter the adopter's ID number from list.");
 			int adopterNumber = in.nextInt();

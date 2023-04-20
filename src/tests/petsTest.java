@@ -35,7 +35,7 @@ class petsTest {
 	@Test
 	void testPetsSettersNoDate() {
 		
-		Pets p = new Pets(6, "Winnie", "dog", "Mini Yorkie", true, false);
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", true, false);
 	
 		assertEquals(6, p.getAge());
 		assertEquals("Winnie", p.getName());
@@ -47,7 +47,7 @@ class petsTest {
 	@Test
 	void testPetsSettersWithDate() {
 		//testing different constructor
-		Pets p = new Pets(6, "Winnie", "dog", "Mini Yorkie", "2015-05-14", true, false);
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", "2015-05-14", true, false);
 	
 		assertEquals(6, p.getAge());
 		assertEquals("Winnie", p.getName());
@@ -59,7 +59,7 @@ class petsTest {
 	
 	@Test
 	void testIfDateSetCorreclyWithDate() {
-		Pets p = new Pets(6, "Winnie", "dog", "Mini Yorkie", "2015-05-14", true, false);
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", "2015-05-14", true, false);
 		
 		LocalDate ld = LocalDate.parse("2015-05-14");
 		assertEquals(ld, p.getDateOfArrival());
@@ -67,7 +67,7 @@ class petsTest {
 	
 	@Test
 	void testIfDateSetCorreclyWODate() {
-		Pets p = new Pets(6, "Winnie", "dog", "Mini Yorkie", true, false);
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", true, false);
 	
 		assertEquals(LocalDate.now(), p.getDateOfArrival());
 	}
