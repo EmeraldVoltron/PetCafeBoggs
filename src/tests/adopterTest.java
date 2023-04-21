@@ -45,30 +45,6 @@ class adopterTest {
 		assertEquals(true, n.isInterestInDisabledPets());
 		assertEquals(false, n.isHaveChildren());
 		
-		
-	}
-	
-	@Test
-	void testAllSettersWithDate() {
-		Adopters n = new Adopters(19, "Abby", "123 Main St, Des Moines, Iowa 50310", "319-999-9999", "amboggs@dmacc.edu",
-				"2022-10-13", "dog", true, false);
-		
-		assertEquals("Abby", n.getName());
-		assertEquals(19, n.getAge());
-		assertEquals("123 Main St, Des Moines, Iowa 50310", n.getAddress());
-		assertEquals("amboggs@dmacc.edu", n.getEmail());
-		assertEquals("dog", n.getAnimalTypePreference());
-		assertEquals(true, n.isInterestInDisabledPets());
-		assertEquals(false, n.isHaveChildren());
-	}
-	
-	@Test
-	void testIfDateSetCorrectlyWithDate() {
-		Adopters n = new Adopters(19, "Abby", "123 Main St, Des Moines, Iowa 50310", "319-999-9999", "amboggs@dmacc.edu",
-				"2022-10-13", "dog", true, false);
-		
-		LocalDate ld = LocalDate.parse("2022-10-13");
-		assertEquals(ld, n.getFirstVisit());
 	}
 	
 	@Test

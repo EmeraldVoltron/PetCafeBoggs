@@ -1,15 +1,18 @@
 /**************************************************************
-* Name        : Project Name
+* Name        : Pet Cafe Final Project
 * Author      : Abigail Boggs
-* Created     : 
+* Created     : 3/28/23
 * Course      : CIS 152 Data Structures
 * Version     : 1.0
 * OS          : Windows 10
 * Copyright   : This is my own original work based on
 *               specifications issued by our instructor
-* Description : This program overall description here
-*               Input:  list and describe
-*               Output: list and describe
+* Description : Program for employees at a pet cafe to add animals, add
+* 				adopters, and then sort through animals to see what animals
+* 				fit the adopters best. The adopters, are in a priority queue
+* 				from when they last visited. 
+*               Input:  pets, and adopters
+*               Output: pets with their perfect owners
 * Academic Honesty: I attest that this is my original work.
 * I have not used unauthorized source code, either modified or 
 * unmodified. I have not given other fellow student(s) access to
@@ -18,12 +21,11 @@
 
 package helperFiles;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.Scanner;
 
 import classes.Adopters;
-import classes.Pets;
 
 /**
  * @author abbyb
@@ -37,42 +39,50 @@ public class AdopterHelper {
 	}
 	
 	//View all of the adopters
-	public void viewAdopters(ArrayList<Adopters> adoptersList) {
+	public void viewAdopters(Queue<Adopters> adoptersQueue) {
 		
 		System.out.println("Adopters: ");
 		
 		//if the adopter list is empty tell user and return
-		if(adoptersList.isEmpty()) {
+		if(adoptersQueue.isEmpty()) {
 			System.out.println("No animals available.");
 			return;
 		}
-		//go through each adopter in the array list
-		for(int i = 0; i < adoptersList.size(); i++) {
-			System.out.println("Id: " + i + " | Name: " + adoptersList.get(i).getName() +
-					" | Email: " + adoptersList.get(i).getEmail() + " | Age: " + adoptersList.get(i).getAge() +
-					" | Phone Number: " + adoptersList.get(i).getPhoneNumber() + " | Address: " + adoptersList.get(i).getAddress() +
-					" | Date of First Visit: " + adoptersList.get(i).getFirstVisit() + " | Species Preference: " +
-					adoptersList.get(i).getAnimalTypePreference() + " | Have children? " + adoptersList.get(i).isHaveChildren() +
-					" | Interested in Disabled pets? " + adoptersList.get(i).isInterestInDisabledPets());
+		Iterator<Adopters> it = adoptersQueue.iterator();		
+		//go through each adopter in the Queue
+		while(it.hasNext()) {
+			System.out.println(it.next().toString());
+//			System.out.println("Id: " + count + " | Name: " + adoptersQueue.get().getName() +
+//					" | Email: " + it.getEmail() + " | Age: " + adoptersQueue.get(i).getAge() +
+//					" | Phone Number: " + adoptersQueue.get(i).getPhoneNumber() + " | Address: " + adoptersQueue.get(i).getAddress() +
+//					" | Date of First Visit: " + adoptersQueue.get(i).getFirstVisit() + " | Species Preference: " +
+//					adoptersQueue.get(i).getAnimalTypePreference() + " | Have children? " + adoptersQueue.get(i).isHaveChildren() +
+//					" | Interested in Disabled pets? " + adoptersQueue.get(i).isInterestInDisabledPets());
+			
 		}
 		System.out.println();
 	}
 	
 	//Add Adopters
-	public ArrayList<Adopters> addAdopters(ArrayList<Adopters> adoptersList) {
+	public void addAdopters(Queue<Adopters> adoptersQueue) {
 		Adopters adopter;
 		
 		System.out.println("Please enter the adopter's information: ");
-		System.out.println("Adopters's name: ");
+		System.out.print("Adopter's name: ");
 		String name = in.nextLine();
 		
-		System.out.print("Age: ");
-		int age = in.nextInt();
-	
-		in.nextLine();
-		System.out.print("Species: ");
-		String species = in.nextLine();
+		Integer age = (Integer) null;
+		do {
+			System.out.print("Age: ");
+			String ageString = in.nextLine();
 		
+		try {
+			age = Integer.parseInt(ageString);
+		} catch(NumberFormatException e) {
+			System.out.println("Invalid input, try again");
+		}
+		} while (age == null || age <= 18);
+
 		System.out.print("Email: ");
 		String email = in.nextLine();
 		
@@ -84,9 +94,6 @@ public class AdopterHelper {
 		
 		System.out.print("Species preference: ");
 		String preference = in.nextLine();
-		
-		System.out.print("Date of first visit: ");
-		String firstVisit = in.nextLine();	
 		
 		//sees if the adopter has any pets
 		System.out.print("Do they have kids? Y/N: ");
@@ -121,53 +128,38 @@ public class AdopterHelper {
 		} else if(disabled.equalsIgnoreCase("n")) {
 			disabledyn = false;
 		}
-		
 
-		
-		//create new objects
-		if(firstVisit.equalsIgnoreCase("")) {
-			adopter = new Adopters(age, name, address, phoneNumber, email, preference, disabledyn, kidsyn);
-		} else {
-			adopter = new Adopters(age, name, address, phoneNumber, email, firstVisit, preference, disabledyn, kidsyn);
-		}
+		//create new object, date is defined in the constructor of adopter
+		adopter = new Adopters(age, name, address, phoneNumber, email, preference, disabledyn, kidsyn);
 		
 		//add adopter to array
-		adoptersList.add(adopter);
+		adoptersQueue.add(adopter);
 		System.out.println("Adopter added");
-		
-		//returns updated adoptersList
-		return(adoptersList);
+		System.out.println();
 		
 	}
 
 	/**
 	 *  Delete Adopters
 	 */
-	public ArrayList<Adopters> deleteAdopters(ArrayList<Adopters> adoptersList) {	
+	public void deleteAdopters(Queue<Adopters> adoptersQueue) {	
 		System.out.println("What adopter would you like to delete?");
 		//if the list is empty, output tht there are no adopters available and return the list
-		if(adoptersList.isEmpty()) {
+		if(adoptersQueue.isEmpty()) {
 			System.out.println("No adopters available.");
-			return(adoptersList);
+			return;
 		}
 		
 		//gets adopters ID
-		System.out.print("Enter the adopter's ID number from list.");
-		int adopterNumber = in.nextInt();
-		
-		//tests to see if id is in the adopterslist 
-		while(adopterNumber > adoptersList.size() || adopterNumber < 0) {
-			System.out.println("Invalid ID, try again.");
-			adopterNumber = in.nextInt();
-		}
-		
+		System.out.println("Adopter from head of queue will be removed.");
 		//removes adopter from list
-		adoptersList.remove(adopterNumber);
-		System.out.println("Adopter removed.");
-		
-		//returns updated adoptersList
-		return(adoptersList);
-		
+		System.out.println("Adopter removed: " + adoptersQueue.poll());
+		System.out.println();
+	}
+	
+	public void showNextInQueue(Queue<Adopters> adoptersQueue) {
+		System.out.println("Adopter next in line: " + adoptersQueue.peek().toString());	
+		System.out.println();
 	}
 	
 	

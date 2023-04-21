@@ -23,6 +23,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import org.junit.jupiter.api.Test;
 import classes.Pets;
 
@@ -47,8 +50,12 @@ class petsTest {
 	@Test
 	void testPetsSettersWithDate() {
 		//testing different constructor
-		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", "2015-05-14", true, false);
-	
+		
+		//DateTimeFormatter dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+		LocalDate date = LocalDate.parse("2014-10-14");
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", date, true, false);
+		LocalDate expected = LocalDate.parse("2014-10-14");
+		assertEquals(expected, p.getDateOfArrival());
 		assertEquals(6, p.getAge());
 		assertEquals("Winnie", p.getName());
 		assertEquals("Mini Yorkie", p.getBreed());
@@ -59,8 +66,9 @@ class petsTest {
 	
 	@Test
 	void testIfDateSetCorreclyWithDate() {
-		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", "2015-05-14", true, false);
-		
+		LocalDate date = LocalDate.parse("2015-05-14");
+		Pets p = new Pets("Winnie", 6, "dog", "Mini Yorkie", date, true, false);
+		//System.out.println(date);
 		LocalDate ld = LocalDate.parse("2015-05-14");
 		assertEquals(ld, p.getDateOfArrival());
 	}

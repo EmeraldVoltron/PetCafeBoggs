@@ -50,21 +50,15 @@ public class Pets {
 		this.disabilities = disabilities;
 	}
 	
-	public Pets(String name, int age, String typeOfAnimal, String breed, String dateOfArrival,
+	public Pets(String name, int age, String typeOfAnimal, String breed, LocalDate dateOfArrival,
 			boolean goodWithChildren, boolean disabilities) {
 		this.age = age;
 		this.typeOfAnimal = typeOfAnimal;
 		this.name = name;
-		this.breed = breed;
-		try {
-			this.dateOfArrival = LocalDate.parse(dateOfArrival);
-		} catch (Exception e){
-			System.out.println("Invalid date");
-		} finally {
-			this.dateOfArrival = LocalDate.now();
-			this.goodWithChildren = goodWithChildren;
-			this.disabilities = disabilities;
-		}
+		this.breed = breed;			
+		this.dateOfArrival = dateOfArrival;
+		this.goodWithChildren = goodWithChildren;
+		this.disabilities = disabilities;
 	}
 	
 	/**

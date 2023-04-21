@@ -54,19 +54,6 @@ public class Adopters {
 		
 		this.firstVisit = LocalDate.now();
 	}
-	
-	public Adopters(int age, String name, String address, String phoneNumber, String email,
-			String firstVisit, String animalTypePreference, boolean interestInDisabledPets, boolean haveChildren) {
-		this.age = age;
-		this.name = name;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.firstVisit = LocalDate.parse(firstVisit);
-		this.animalTypePreference = animalTypePreference;
-		this.interestInDisabledPets = interestInDisabledPets;
-		this.haveChildren = haveChildren;
-	}
 		
 	/**
 	 * @return the age
