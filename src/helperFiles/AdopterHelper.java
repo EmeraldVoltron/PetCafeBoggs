@@ -66,12 +66,14 @@ public class AdopterHelper {
 	//Add Adopters
 	public void addAdopters(Queue<Adopters> adoptersQueue) {
 		Adopters adopter;
-		
+	
 		System.out.println("Please enter the adopter's information: ");
 		System.out.print("Adopter's name: ");
 		String name = in.nextLine();
 		
+	
 		Integer age = (Integer) null;
+		//checks to make sure the age inputed is in number for and is 18 or older
 		do {
 			System.out.print("Age: ");
 			String ageString = in.nextLine();
@@ -80,8 +82,8 @@ public class AdopterHelper {
 			age = Integer.parseInt(ageString);
 		} catch(NumberFormatException e) {
 			System.out.println("Invalid input, try again");
-		}
-		} while (age == null || age <= 18);
+		} 
+		} while (age == null || age < 18); //makes sure the age is not less than 18, have to be 18 to adopt an animal
 
 		System.out.print("Email: ");
 		String email = in.nextLine();
@@ -157,6 +159,7 @@ public class AdopterHelper {
 		System.out.println();
 	}
 	
+	//shows next adopter in the queue
 	public void showNextInQueue(Queue<Adopters> adoptersQueue) {
 		System.out.println("Adopter next in line: " + adoptersQueue.peek().toString());	
 		System.out.println();

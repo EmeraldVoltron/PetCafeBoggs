@@ -22,7 +22,6 @@
 package helperFiles;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +49,7 @@ public class AnimalsHelper {
 			System.out.println("No animals available.");
 			return;
 		}
+		//prints out each pet from the list
 		for(int i = 0; i < petsList.size(); i++) {
 			System.out.println("Id: " + i + " | Name: " + petsList.get(i).getName() + " | Age: " + petsList.get(i).getAge() +
 					" | Species: " + petsList.get(i).getTypeOfAnimal() + " | Breed: " + 
@@ -69,6 +69,7 @@ public class AnimalsHelper {
 			String name = in.nextLine();
 			
 			Integer age = (Integer) null;
+			//gets animals age and make sure its a number format
 			do {
 				System.out.print("Age: ");
 				String ageString = in.nextLine();
@@ -91,6 +92,7 @@ public class AnimalsHelper {
 			String breed = in.nextLine();
 		
 			LocalDate dateOfArrival = null;
+			//make sure the date is inputted correctly
 			do {
 				System.out.print("Date of arrival (yyyy-mm-dd): ");
 				String d = in.nextLine();
@@ -180,6 +182,7 @@ public class AnimalsHelper {
 		return sorting;
 	}
 	
+	//compares the pets type for sorting
 	public static Comparator<Pets> petsTypeComparator = new Comparator<Pets>() {
 		public int compare(Pets s1, Pets s2) {
 			String petType1 = s1.getTypeOfAnimal().toUpperCase();
@@ -194,7 +197,7 @@ public class AnimalsHelper {
 	 * @param animalId
 	 */
 	public void deleteAnimals(ArrayList<Pets> p, int animalId) {
-		p.remove(animalId);
+		p.remove(animalId); //removes the pets just using the animalsId
 	}
 	
 }

@@ -109,6 +109,7 @@ public class DriverClass {
 		
 		String choice = in.next();
 		
+		//check to see if the input is a valid option
 		while(choice.equalsIgnoreCase("a") == false &&
 				choice.equalsIgnoreCase("b") == false &&
 				choice.equalsIgnoreCase("c") == false &&
@@ -117,23 +118,28 @@ public class DriverClass {
 			choice = in.next();
 		}
 		
+		//act on the choices
 		if(choice.equalsIgnoreCase("r")) {
 			printMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("a")){
 			if(pets.isEmpty()) {
 				System.out.println("No animals available, please add more");
 			} else {
+				//sort animals then show them
+				anHelp.sortAnimals(pets);
 				anHelp.viewAnimals(pets);
 			}
 			printAnimalMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("b")) {
+			//adds animals
 			anHelp.addAnimals(pets);
 			printAnimalMenu(pets, a);
 		} else if(choice.equalsIgnoreCase("c")) {
 			if(pets.isEmpty()) {
 				System.out.println("No animals to delete.");
 			} else {
-			anHelp.deleteAnimals(pets);
+				//delete animals
+				anHelp.deleteAnimals(pets);
 			}
 			printAnimalMenu(pets, a);
 		}
@@ -158,6 +164,7 @@ public class DriverClass {
 		System.out.println("R. return to main menu");
 		
 		String choice = in.next();
+		//check to see if the input is a valid option
 		while(choice.equalsIgnoreCase("a") == false &&
 				choice.equalsIgnoreCase("b") == false &&
 				choice.equalsIgnoreCase("c") == false &&
@@ -167,29 +174,37 @@ public class DriverClass {
 			choice = in.next();
 		}
 		
+		//act on the aptions
 		if(choice.equalsIgnoreCase("r")) {
+			//return to the main menu
 			printMenu(p, adopters);
 		} else if(choice.equalsIgnoreCase("a")){
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters, please add more");
 			} else {
+				//calls view adopters method
 				adHelp.viewAdopters(adopters);
 			}
+			//print the adopter menu over again after being returned
 			printAdopterMenu(p, adopters); 
 		} else if(choice.equalsIgnoreCase("b")) {
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters, please add more");
 			} else {
+				//shows next in queue from adopter menu
 				adHelp.showNextInQueue(adopters);
 			}
+			//print adopter menu over again after returning back to function
 			printAdopterMenu(p, adopters);
 		} else if(choice.equalsIgnoreCase("c")) {
+			//add adopters from helper file
 			adHelp.addAdopters(adopters);
 			printAdopterMenu(p, adopters);
 		} else if(choice.equalsIgnoreCase("d")) {
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters to delete.");
 			} else {
+				//delete adopters using helper file
 				adHelp.deleteAdopters(adopters);
 			}
 			printAdopterMenu(p, adopters);
@@ -216,6 +231,7 @@ public class DriverClass {
 		System.out.println("R. return to main menu");
 		
 		String choice = in.next();
+		//checks to see if the input is a valid choice
 		while(choice.equalsIgnoreCase("a") == false &&
 				choice.equalsIgnoreCase("b") == false &&
 				choice.equalsIgnoreCase("c") == false &&
@@ -225,11 +241,13 @@ public class DriverClass {
 		}
 		
 		if(choice.equalsIgnoreCase("r")) {
+			//return to main menu
 			printMenu(p, adopters);
 		} else if(choice.equalsIgnoreCase("a")){
 			if(adopters.isEmpty()) {
 				System.out.println("Queue empty, please add more adopters.");
 			} else {
+				//show next adopter in the queue
 				adHelp.showNextInQueue(adopters);
 			}
 			printMatchingMenu(p, adopters, pairs);
@@ -237,6 +255,7 @@ public class DriverClass {
 			if(p.isEmpty()) {
 				System.out.println("No animals, please add more.");	
 			} else {
+				//sort the animals then show the animals
 				anHelp.sortAnimals(p);
 				anHelp.viewAnimals(p);
 			}
@@ -245,6 +264,7 @@ public class DriverClass {
 			if(p.isEmpty() || adopters.isEmpty()) {
 				System.out.println("No animals or adopters to pair");
 			} else {
+				//shows the pair menu
 				printPairMenu(p, adopters, pairs);
 			}
 			printMatchingMenu(p, adopters, pairs);
@@ -270,13 +290,18 @@ public class DriverClass {
 			animalId = in.nextInt();
 		}
 		
+		//get the animal selected
 		Pets pet = p.get(animalId);
+		//get the next adopter in queue
 		Adopters adopter = adopters.peek();
 		
+		//put the pair together in the map
 		pairs.put(pet, adopter);
 		System.out.println("Pairs " + pairs.toString());
 		
+		//deletes the animal from arraylist
 		anHelp.deleteAnimals(p, animalId);
+		//delete the adopter from the queue
 		adopters.poll();
 	 
 		in.close();
