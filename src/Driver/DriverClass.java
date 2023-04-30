@@ -20,6 +20,8 @@ package Driver;
 * my program.         
 ***************************************************************/
 
+import static org.hamcrest.CoreMatchers.containsString;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,12 +40,14 @@ import classes.Adopters;
  */
 public class DriverClass {
 	
+	public static Scanner in = new Scanner(System.in);
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		ArrayList<Pets> pets = new ArrayList<Pets>();
 		Queue<Adopters> adopters = new LinkedList<>();
+		
 		
 		printMenu(pets, adopters);
 
@@ -54,7 +58,7 @@ public class DriverClass {
 	public static void printMenu(ArrayList<Pets> p, Queue<Adopters> a) {
 		ArrayList<Pets> pets = p;
 		Queue<Adopters> adopters = a;
-		Map<Pets, Adopters> pairs = new HashMap<Pets, Adopters>();
+		Map<Pets, Adopters> pairs = new HashMap<>();
 		
 		System.out.println();
 		System.out.println("Welcome to the pet cafe!");
@@ -69,13 +73,13 @@ public class DriverClass {
 		
 		try {
 			//check to see if the input is right, if not ask again
-			String choice = in.next();
+			String choice = in.nextLine();
 			while(choice.equalsIgnoreCase("a") == false &&
 					choice.equalsIgnoreCase("b") == false &&
 					choice.equalsIgnoreCase("c") == false &&
 					choice.equalsIgnoreCase("e") == false) {
 				System.out.println("Invalid option please try again.");
-				choice = in.next();
+				choice = in.nextLine();
 			}
 			//go to corresponding menus
 			if(choice.equalsIgnoreCase("a")) {
@@ -84,19 +88,20 @@ public class DriverClass {
 				printAdopterMenu(pets, adopters);
 			} else if(choice.equalsIgnoreCase("c")) {
 				printMatchingMenu(pets, adopters, pairs);
+			} else if(choice.equalsIgnoreCase("e")) {
+				in.close();
+				return;
 			}
 		} catch (Exception e) {
 			
 		}
 		
-		in.close();
+
 	}
 	
 	//animal menu (option a)
 	public static void printAnimalMenu(ArrayList<Pets> pets, Queue<Adopters> a){
 		AnimalsHelper anHelp = new AnimalsHelper();
-		
-		Scanner in = new Scanner(System.in);
 		
 		System.out.println();
 		System.out.println("Animal View");
@@ -107,7 +112,7 @@ public class DriverClass {
 		System.out.println("C. Delete Animals");
 		System.out.println("R. return to main menu");
 		
-		String choice = in.next();
+		String choice = in.nextLine();
 		
 		//check to see if the input is a valid option
 		while(choice.equalsIgnoreCase("a") == false &&
@@ -115,7 +120,7 @@ public class DriverClass {
 				choice.equalsIgnoreCase("c") == false &&
 				choice.equalsIgnoreCase("r") == false) {
 			System.out.print("Invalid choice, try again: ");
-			choice = in.next();
+			choice = in.nextLine();
 		}
 		
 		//act on the choices
@@ -143,8 +148,6 @@ public class DriverClass {
 			}
 			printAnimalMenu(pets, a);
 		}
-		
-		in.close();
 	}
 	
 	//adopter menu option B
@@ -163,7 +166,7 @@ public class DriverClass {
 		System.out.println("D. Delete Adopter");
 		System.out.println("R. return to main menu");
 		
-		String choice = in.next();
+		String choice = in.nextLine();
 		//check to see if the input is a valid option
 		while(choice.equalsIgnoreCase("a") == false &&
 				choice.equalsIgnoreCase("b") == false &&
@@ -171,7 +174,7 @@ public class DriverClass {
 				choice.equalsIgnoreCase("d") == false &&
 				choice.equalsIgnoreCase("r") == false) {
 			System.out.print("Invalid choice, try again: ");
-			choice = in.next();
+			choice = in.nextLine();
 		}
 		
 		//act on the aptions
@@ -215,12 +218,7 @@ public class DriverClass {
 	}
 	
 	//match pairs menu
-	public static void printMatchingMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs){
-		AdopterHelper adHelp = new AdopterHelper();
-		AnimalsHelper anHelp = new AnimalsHelper();
-		
-		Scanner in = new Scanner(System.in);
-		
+	public static void printMatchingMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs){		
 		System.out.println();
 		System.out.println("Match some adoption pairs");
 		System.out.println("--------------------------");
@@ -229,47 +227,45 @@ public class DriverClass {
 		System.out.println("B. View animals (sorted)");
 		System.out.println("C. Make a match.");
 		System.out.println("R. return to main menu");
+	
+		String option = in.nextLine();
 		
-		String choice = in.next();
-		//checks to see if the input is a valid choice
-		while(choice.equalsIgnoreCase("a") == false &&
-				choice.equalsIgnoreCase("b") == false &&
-				choice.equalsIgnoreCase("c") == false &&
-				choice.equalsIgnoreCase("r") == false) {
-			System.out.print("Invalid choice, try again: ");
-			choice = in.next();
+		while(!option.equalsIgnoreCase("a") &&
+				!option.equalsIgnoreCase("b") &&
+				!option.equalsIgnoreCase("c") &&
+				!option.equalsIgnoreCase("r")) {
+			System.out.println("Invalid input, try again");
+			option = in.nextLine();
 		}
 		
-		if(choice.equalsIgnoreCase("r")) {
-			//return to main menu
+		if(option.equalsIgnoreCase("r")) {
 			printMenu(p, adopters);
-		} else if(choice.equalsIgnoreCase("a")){
+		} else if(option.equalsIgnoreCase("a")) {
 			if(adopters.isEmpty()) {
-				System.out.println("Queue empty, please add more adopters.");
+				System.out.println("Adopter's queue is empty, please add adopters");
 			} else {
-				//show next adopter in the queue
-				adHelp.showNextInQueue(adopters);
+				System.out.println(adopters.peek());
 			}
-			printMatchingMenu(p, adopters, pairs);
-		} else if(choice.equalsIgnoreCase("b")) {
+		} else if(option.equalsIgnoreCase("b")) {
 			if(p.isEmpty()) {
-				System.out.println("No animals, please add more.");	
+				System.out.println("No animals to show, please add pets.");
 			} else {
-				//sort the animals then show the animals
-				anHelp.sortAnimals(p);
-				anHelp.viewAnimals(p);
+				for(int i = 0; i < p.size(); i++) {
+					System.out.println(p.get(i).toString());
+				}
 			}
-			printMatchingMenu(p, adopters, pairs); 
-		} else if(choice.equalsIgnoreCase("c")) {
+		} else if(option.equalsIgnoreCase("c")) {
 			if(p.isEmpty() || adopters.isEmpty()) {
-				System.out.println("No animals or adopters to pair");
+				System.out.println("Only able to make a pair if adopters or animals are available.");
 			} else {
-				//shows the pair menu
 				printPairMenu(p, adopters, pairs);
 			}
+		}
+		if(p.isEmpty() || adopters.isEmpty()) {
+			printMenu(p, adopters);
+		} else {
 			printMatchingMenu(p, adopters, pairs);
-		} 
-		in.close();
+		}
 	}
 
 	/**
@@ -277,33 +273,43 @@ public class DriverClass {
 	 * @param adopters
 	 * @param pairs
 	 */
+	
 	private static void printPairMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs) {
 		AnimalsHelper anHelp = new AnimalsHelper();
 		
-		Scanner in = new Scanner(System.in);
-		
-		System.out.println();
 		System.out.println("Enter the id of the animal you'd like to pair with the next adopter in line.");
-		int animalId = in.nextInt();
-		while(!in.hasNextInt() || animalId < 0 || animalId > p.size()) {
-			System.out.println("Invalid id, try again");
-			animalId = in.nextInt();
-		}
+		Integer id = (Integer) null;
+		//gets animals id and make sure its a number format
+		do {
+			String idString = in.nextLine();
+			
+			try {
+				id = Integer.parseInt(idString);
+			} catch(NumberFormatException e) {
+				System.out.println("Invalid input, try again");
+			} finally {
+				if(id < 0 || id >  p.size()) {
+					System.out.println("ID cannot be less than 0.");
+				}
+			}
+		} while (id == null || id < 0 || id > p.size());
 		
 		//get the animal selected
-		Pets pet = p.get(animalId);
+		Pets pet = p.get(id);
 		//get the next adopter in queue
 		Adopters adopter = adopters.peek();
-		
+				
 		//put the pair together in the map
 		pairs.put(pet, adopter);
 		System.out.println("Pairs " + pairs.toString());
-		
+				
 		//deletes the animal from arraylist
-		anHelp.deleteAnimals(p, animalId);
+		anHelp.deleteAnimals(p, id);
 		//delete the adopter from the queue
 		adopters.poll();
-	 
-		in.close();
+		 
+		return;
 	}
+	
+	
 }

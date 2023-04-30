@@ -160,12 +160,12 @@ public class AnimalsHelper {
 		}
 		
 		System.out.print("Enter the animal's ID number from list.");
-		int animalNumber = in.nextInt();
+		int animalNumber = Integer.parseInt(in.nextLine());
 		
 		//checks to make sure the number is in the bounds
 		while(animalNumber > petsList.size() || animalNumber < 0) {
 			System.out.println("Invalid ID, try again.");
-			animalNumber = in.nextInt();
+			animalNumber = Integer.parseInt(in.nextLine());
 		}
 		
 		//removes
@@ -198,6 +198,7 @@ public class AnimalsHelper {
 	 */
 	public void deleteAnimals(ArrayList<Pets> p, int animalId) {
 		p.remove(animalId); //removes the pets just using the animalsId
+		return;
 	}
 	
 }
