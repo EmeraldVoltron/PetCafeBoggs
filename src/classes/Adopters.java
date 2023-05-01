@@ -169,9 +169,9 @@ public class Adopters {
 
 	@Override
 	public String toString() {
-		return "Adopters [age=" + age + ", name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber
-				+ ", email=" + email + ", firstVisit=" + firstVisit + ", animalTypePreference=" + animalTypePreference
-				+ ", interestInDisabledPets=" + interestInDisabledPets + ", haveChildren=" + haveChildren + "]";
+		return "Adopter: " + name + " | Age : " + age + " | Address: " + address + " | Phone Number: " + phoneNumber + " | Email: " + email +
+				" | First Visit Date: " + firstVisit + " | Animal Preference: " + animalTypePreference + " | Interested in Disabled pets? " +
+				interestInDisabledPets + " | Children? " + haveChildren;
 	}
 	
 	

@@ -148,8 +148,8 @@ public class Pets {
 	
 	@Override
 	public String toString() {
-		return "pets [age=" + age + ", name=" + name + ", disabilities=" + disabilities + ", typeOfAnimal="
-				+ typeOfAnimal + ", breed=" + breed + ", dateOfArrival=" + dateOfArrival + "]";
+		return "Pet name: " + name + " | Age: " + age + " | Disabled? " + disabilities + " | Species: " +
+			 typeOfAnimal + " | Breed: " + breed + " | Date of Arrival: " + dateOfArrival;
 	}
 	
 	

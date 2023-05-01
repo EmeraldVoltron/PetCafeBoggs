@@ -20,8 +20,6 @@ package Driver;
 * my program.         
 ***************************************************************/
 
-import static org.hamcrest.CoreMatchers.containsString;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -47,18 +45,19 @@ public class DriverClass {
 	public static void main(String[] args) {
 		ArrayList<Pets> pets = new ArrayList<Pets>();
 		Queue<Adopters> adopters = new LinkedList<>();
+		Map<Pets, Adopters> pairs = new HashMap<>();
 		
 		
-		printMenu(pets, adopters);
+		printMenu(pets, adopters, pairs);
 
 		System.out.println("Goodbye!");
 	}
 
 	//Main menu
-	public static void printMenu(ArrayList<Pets> p, Queue<Adopters> a) {
+	public static void printMenu(ArrayList<Pets> p, Queue<Adopters> a, Map<Pets, Adopters> matches) {
 		ArrayList<Pets> pets = p;
 		Queue<Adopters> adopters = a;
-		Map<Pets, Adopters> pairs = new HashMap<>();
+		Map<Pets, Adopters> pairs = matches;
 		
 		System.out.println();
 		System.out.println("Welcome to the pet cafe!");
@@ -83,9 +82,9 @@ public class DriverClass {
 			}
 			//go to corresponding menus
 			if(choice.equalsIgnoreCase("a")) {
-				printAnimalMenu(pets, adopters);
+				printAnimalMenu(pets, adopters, pairs);
 			} else if(choice.equalsIgnoreCase("b")) {
-				printAdopterMenu(pets, adopters);
+				printAdopterMenu(pets, adopters, pairs);
 			} else if(choice.equalsIgnoreCase("c")) {
 				printMatchingMenu(pets, adopters, pairs);
 			} else if(choice.equalsIgnoreCase("e")) {
@@ -100,7 +99,7 @@ public class DriverClass {
 	}
 	
 	//animal menu (option a)
-	public static void printAnimalMenu(ArrayList<Pets> pets, Queue<Adopters> a){
+	public static void printAnimalMenu(ArrayList<Pets> pets, Queue<Adopters> a, Map<Pets, Adopters> pairs){
 		AnimalsHelper anHelp = new AnimalsHelper();
 		
 		System.out.println();
@@ -125,7 +124,7 @@ public class DriverClass {
 		
 		//act on the choices
 		if(choice.equalsIgnoreCase("r")) {
-			printMenu(pets, a);
+			printMenu(pets, a, pairs);
 		} else if(choice.equalsIgnoreCase("a")){
 			if(pets.isEmpty()) {
 				System.out.println("No animals available, please add more");
@@ -134,11 +133,11 @@ public class DriverClass {
 				anHelp.sortAnimals(pets);
 				anHelp.viewAnimals(pets);
 			}
-			printAnimalMenu(pets, a);
+			printAnimalMenu(pets, a, pairs);
 		} else if(choice.equalsIgnoreCase("b")) {
 			//adds animals
 			anHelp.addAnimals(pets);
-			printAnimalMenu(pets, a);
+			printAnimalMenu(pets, a, pairs);
 		} else if(choice.equalsIgnoreCase("c")) {
 			if(pets.isEmpty()) {
 				System.out.println("No animals to delete.");
@@ -146,12 +145,12 @@ public class DriverClass {
 				//delete animals
 				anHelp.deleteAnimals(pets);
 			}
-			printAnimalMenu(pets, a);
+			printAnimalMenu(pets, a, pairs);
 		}
 	}
 	
 	//adopter menu option B
-	public static void printAdopterMenu(ArrayList<Pets> p, Queue<Adopters> adopters) {
+	public static void printAdopterMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs) {
 		AdopterHelper adHelp = new AdopterHelper();
 		
 		Scanner in = new Scanner(System.in);
@@ -180,7 +179,7 @@ public class DriverClass {
 		//act on the aptions
 		if(choice.equalsIgnoreCase("r")) {
 			//return to the main menu
-			printMenu(p, adopters);
+			printMenu(p, adopters, pairs);
 		} else if(choice.equalsIgnoreCase("a")){
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters, please add more");
@@ -189,7 +188,7 @@ public class DriverClass {
 				adHelp.viewAdopters(adopters);
 			}
 			//print the adopter menu over again after being returned
-			printAdopterMenu(p, adopters); 
+			printAdopterMenu(p, adopters, pairs); 
 		} else if(choice.equalsIgnoreCase("b")) {
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters, please add more");
@@ -198,11 +197,11 @@ public class DriverClass {
 				adHelp.showNextInQueue(adopters);
 			}
 			//print adopter menu over again after returning back to function
-			printAdopterMenu(p, adopters);
+			printAdopterMenu(p, adopters, pairs);
 		} else if(choice.equalsIgnoreCase("c")) {
 			//add adopters from helper file
 			adHelp.addAdopters(adopters);
-			printAdopterMenu(p, adopters);
+			printAdopterMenu(p, adopters, pairs);
 		} else if(choice.equalsIgnoreCase("d")) {
 			if(adopters.isEmpty()) {
 				System.out.println("No adopters to delete.");
@@ -210,7 +209,7 @@ public class DriverClass {
 				//delete adopters using helper file
 				adHelp.deleteAdopters(adopters);
 			}
-			printAdopterMenu(p, adopters);
+			printAdopterMenu(p, adopters, pairs);
 		} 
 		
 		in.close();
@@ -218,7 +217,8 @@ public class DriverClass {
 	}
 	
 	//match pairs menu
-	public static void printMatchingMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs){		
+	public static void printMatchingMenu(ArrayList<Pets> p, Queue<Adopters> adopters, Map<Pets, Adopters> pairs){	
+		AnimalsHelper anHelper = new AnimalsHelper();
 		System.out.println();
 		System.out.println("Match some adoption pairs");
 		System.out.println("--------------------------");
@@ -226,6 +226,7 @@ public class DriverClass {
 		System.out.println("A. View Next Adopter in Queue");
 		System.out.println("B. View animals (sorted)");
 		System.out.println("C. Make a match.");
+		System.out.println("D. View Pairs.");
 		System.out.println("R. return to main menu");
 	
 		String option = in.nextLine();
@@ -233,38 +234,53 @@ public class DriverClass {
 		while(!option.equalsIgnoreCase("a") &&
 				!option.equalsIgnoreCase("b") &&
 				!option.equalsIgnoreCase("c") &&
-				!option.equalsIgnoreCase("r")) {
+				!option.equalsIgnoreCase("r") &&
+				!option.equalsIgnoreCase("d")) {
 			System.out.println("Invalid input, try again");
 			option = in.nextLine();
 		}
 		
 		if(option.equalsIgnoreCase("r")) {
-			printMenu(p, adopters);
+			printMenu(p, adopters, pairs);
 		} else if(option.equalsIgnoreCase("a")) {
 			if(adopters.isEmpty()) {
 				System.out.println("Adopter's queue is empty, please add adopters");
+				printMenu(p, adopters, pairs);
 			} else {
 				System.out.println(adopters.peek());
+				printMatchingMenu(p, adopters, pairs);
 			}
 		} else if(option.equalsIgnoreCase("b")) {
 			if(p.isEmpty()) {
 				System.out.println("No animals to show, please add pets.");
+				printMenu(p, adopters, pairs);
 			} else {
+				anHelper.sortAnimals(p);
 				for(int i = 0; i < p.size(); i++) {
-					System.out.println(p.get(i).toString());
+					System.out.println("Id: " + i + " | Name: " + p.get(i).getName() + " | Age: " + p.get(i).getAge() +
+					" | Species: " + p.get(i).getTypeOfAnimal() + " | Breed: " + 
+					p.get(i).getBreed() + " | Date of arrival: " + p.get(i).getDateOfArrival() +
+					" | Good with kids? " + p.get(i).isGoodWithChildren() + " | Disabled? " +
+					p.get(i).isDisabilities());
 				}
+				printMatchingMenu(p, adopters, pairs);
 			}
 		} else if(option.equalsIgnoreCase("c")) {
 			if(p.isEmpty() || adopters.isEmpty()) {
 				System.out.println("Only able to make a pair if adopters or animals are available.");
+				printMenu(p, adopters, pairs);
 			} else {
 				printPairMenu(p, adopters, pairs);
+				printMatchingMenu(p, adopters, pairs);
 			}
-		}
-		if(p.isEmpty() || adopters.isEmpty()) {
-			printMenu(p, adopters);
-		} else {
-			printMatchingMenu(p, adopters, pairs);
+		} else if(option.equalsIgnoreCase("d")) {
+			if(pairs.isEmpty()) {
+				System.out.println("No matches made, please make a pair.");
+				printMatchingMenu(p, adopters, pairs);
+			} else {
+				System.out.println(pairs.toString());
+				printMatchingMenu(p, adopters, pairs);
+			}
 		}
 	}
 
@@ -290,6 +306,7 @@ public class DriverClass {
 			} finally {
 				if(id < 0 || id >  p.size()) {
 					System.out.println("ID cannot be less than 0.");
+					
 				}
 			}
 		} while (id == null || id < 0 || id > p.size());
